@@ -53,6 +53,14 @@ app.set('view engine', 'handlebars');
 
 // middleware end
 app.get('/', (req, res) => {
+    // Blog.find()
+    // .then(blogs => {
+    //   console.log('found blogs')
+    //   console.log(blogs)
+    // })
+    // res.render('home',{
+    //   files: blogs
+    // });
     res.render('home');
 });
 
@@ -71,15 +79,32 @@ app.post('/upload', (req, res) => {
           msg: 'Error: No file selected'
         });
       } else {
-        // console.log(req.files[0].path)
-        res.render('home',{
-          msg: 'File Uploaded',
-          // files: `uploads/${req.file.filename}`
+        // save to database
+        let newBlog = {
           files: req.files
-        });
+        }
+        new Blog(newBlog)
+        .save()
+        .then (blogs => {
+          console.log('posted blogs')
+          // console.log(blogs);
+          res.redirect('/upload');
+        })
       }
     }
   });
+});
+// fetch all the posts uploaded
+app.get('/upload', (req, res) => {
+  Blog.find()
+   .then(blogs => {
+     console.log('found blogs');
+     console.log(blogs);
+     res.render('home', {
+       blogs: blogs
+     });
+   })
+   .catch(err => console.log(err));
 });
 
 app.listen(port, () => console.log(`server started on port ${port}`));
