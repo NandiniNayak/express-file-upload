@@ -18,9 +18,14 @@
  </button>
 </form>
 
-{{#each files}}
-  <div class="show-img">
-       <!-- <input type="hidden" id="custId" name="custId" value="{{filename}}"> -->
-    <img src="uploads/{{filename}}" alt="" class="responsive-img">
-  </div>
+{{#each blogs}}
+  <div class="row">
+  {{#each files}}
+    <div class="col-md-4">
+      <div class="card">
+          <img src="uploads/{{filename}}" alt="" class="responsive-img">
+      </div>
+    </div>
+  {{/each}}
+ </div>
 {{/each}}
